@@ -10,11 +10,16 @@ import numpy as np  # Import NumPy for numeric operations
 from urllib.parse import urlparse,urlencode # import more library for the trained model
 import ipaddress
 import re
+import sys
 
 
-raw_dataset = pd.read_csv('dataset_phishing.csv')
+
+
+# dataset_buffer = sys.stdin.buffer.read()
+# raw_dataset = pd.read_csv('dataset_phishing.csv')
+# raw_dataset = dataset_buffer.copy()
+raw_dataset = sys.stdin.read()
 raw_dataset.head()
-
 raw_dataset.shape
 raw_dataset.describe()
 pd.set_option('display.max_rows', 500)
@@ -97,7 +102,7 @@ def custom_accuracy_set (model, X_train, X_test, y_train, y_test, train=True):
     y_predicted = model.predict(x)
     
     accuracy = accuracy_score(y, y_predicted)
-    # print('model accuracy: {0:4f}'.format(accuracy))
+    print('model accuracy: {0:4f}'.format(accuracy))
     oconfusion_matrix = confusion_matrix(y, y_predicted)
     # print('Confusion matrix: \n {}'.format(oconfusion_matrix))
     oroc_auc_score = lb.transform(y), lb.transform(y_predicted)
@@ -107,11 +112,14 @@ custom_accuracy_set(model_random_forest, X_train, X_test, y_train, y_test, train
 custom_accuracy_set(model_random_forest, X_train, X_test, y_train, y_test, train=False)
 
 
+
+# Several features selection for the trained dataset
 with open('trained_model.pkl', 'wb') as model_file:
     pickle.dump(model_random_forest, model_file)
 
-
-# Several features selection for the trained dataset
+# Load the trained model
+    with open('trained_model.pkl', 'rb') as model_file:
+        model_random_forest = pickle.load(model_file)
 
 # 1.Checks for IP address in URL (Have_IP)
 def havingIP(url):
@@ -208,8 +216,8 @@ def extract_features(url):
     features.append(len(parsed_url.path))  # Path length
     features.append(parsed_url.path.count('/') + 1)  # Number of path segments
 
-    print(f"URL: {url}")
-    print(f"Features: {features}")
+    # print(f"URL: {url}")
+    # print(f"Features: {features}")
 
     return features
 
@@ -225,7 +233,6 @@ def preprocess_test_data(test_links, selected_features_order):
 
     return test_df
 
-
 # Example test links
 test_links = ["https://facebook.com", "http://shadetreetechnology.com/V4/validation/a111aedc8ae390eabcfa130e041a10a4"]
 
@@ -238,6 +245,8 @@ predicted_labels = model_random_forest.predict(test_data)
 # Display the results
 for url, label in zip(test_links, predicted_labels):
     print(f"URL: {url} - Predicted Label: {'Legitimate' if label == 0 else 'Phishing'}")
+    sys.stdout.write(label)
+    sys.stdout.flush()
 
 # Generate a pie chart to visualize the distribution of predicted labels
 predicted_counts = pd.Series(predicted_labels).value_counts()

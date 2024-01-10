@@ -13,18 +13,15 @@ import re
 import sys
 
 
-
 def main():
    
-    # Check if data is provided through standard input
-    if not sys.stdin.isatty():
-        dataset_buffer = sys.stdin.buffer.read()
-        dataset = pd.read_csv(pd.compat.StringIO(dataset_buffer.decode('utf-8')))
-    else:
-        # If no input is provided through standard input, load data from file
-        dataset = pd.read_csv('dataset_phishings.csv')
+     # Retrieve command line arguments (url and filePath)
+    url = sys.argv[1]
+    filePath = sys.argv[2]
+    # dataset = pd.read_csv('dataset_phishing.csv')
+    dataset = pd.read_csv(filePath)
 
-    # Continue with your existing code
+
 
     raw_dataset = dataset.copy()
     raw_dataset.head()
@@ -191,7 +188,8 @@ def main():
 
 
     # Example test links
-    test_links = ["http://facebook.com"]
+    # url = "http://facebook.com"
+    test_links = [url]
 
     # Preprocess the test data
     test_data = preprocess_test_data(test_links, X_selected.columns)
@@ -201,9 +199,10 @@ def main():
 
     # Display the results
     for url, label in zip(test_links, predicted_labels):
-        print(f"URL: {url} - Predicted Label: {'Legitimate' if label == 0 else 'Phishing'}")
-        sys.stdout.write(f"{label}\n")
-        sys.stdout.flush()
+        # print(f"URL: {url} - Predicted Label: {'Legitimate' if label == 0 else 'Phishing'}")
+        print(f"{'Legitimate' if label == 0 else 'Phishing'}")
+        # sys.stdout.write(f"{label}\n")
+        # sys.stdout.flush()
 
     # Generate a pie chart to visualize the distribution of predicted labels
     predicted_counts = pd.Series(predicted_labels).value_counts()
