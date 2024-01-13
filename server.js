@@ -23,7 +23,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
       try {
         const fileUpload = req.file;
            fs.writeFileSync('uploaded_dataset.csv', fileUpload.buffer)
-           console.log(filePath)
+          //  console.log(filePath)
               const label = fileUpload.originalname
                 console.log(label)
               res.json({message: 'File Uploaded Successfully!', label})
@@ -41,20 +41,21 @@ app.post('/process-url', (req, res) => {
         // const fileName = getFileName(filePath);
         const dataset = path.basename(filePath);
            const url = req.body.url;
-               const pythonProcess = spawn('python', ['trained_model.py', url, dataset]);
+              //  const pythonProcess = spawn('python', ['trained_model.py', url, dataset]);
+              const scriptPath = path.join(__dirname, 'bin', 'trained_model.exe')
+              const pythonProcess = spawn(scriptPath, [url, dataset])
 
         // Handle stdout and stderr events
         let label = '';
         pythonProcess.stdout.on('data', (data) => {
           console.log(`Python script output: ${data}`);
           label += data.toString().trim()
-          // You can send this data back to the client if needed
         });
        
        
         pythonProcess.stderr.on('data', (data) => {
           console.error(`Python script error: ${data}`);
-          // Handle error if needed
+        
         });
         
         // Close event is emitted when the process exits

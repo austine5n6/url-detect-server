@@ -190,6 +190,7 @@ def main():
     # Example test links
     # url = "http://facebook.com"
     test_links = [url]
+    # test_links = ["http://facebook.com"]
 
     # Preprocess the test data
     test_data = preprocess_test_data(test_links, X_selected.columns)
