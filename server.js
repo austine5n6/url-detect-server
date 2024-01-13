@@ -1,4 +1,5 @@
 const express = require('express');
+// const serverless = require('serverless-http')
 const multer = require('multer');
 const { spawn } = require('child_process');
 const bodyParser = require('body-parser');
@@ -15,6 +16,8 @@ app.use(bodyParser.json())
 app.use(cors())
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+
+const router = express.Router();
 
 
 app.get('/', (req, res) => res.send("This is the HomePage Test of -|Secure Url Shield-|"))
@@ -69,6 +72,10 @@ app.post('/process-url', (req, res) => {
       console.error(error)
     }
 })
+
+// app.use('/.netlify/functions/api', router)
+
+// module.exports.handler = serverless(app)
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
