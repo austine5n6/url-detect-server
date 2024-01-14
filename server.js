@@ -20,7 +20,7 @@ const upload = multer({ storage: storage });
 // const router = express.Router();
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); // Allow requests from any origin
+  res.header('Access-Control-Allow-Origin', 'https://gleeful-clafoutis-0fee83.netlify.app'); // Allow requests from frontend 
   // Additional headers if needed
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -44,7 +44,6 @@ app.post('/upload', upload.single('file'), (req, res) => {
 });
 
 app.post('/process-url', (req, res) => {
-  res.header('Access-Control-Allow-Origin', '*'); // Allow requests from any origin
     try {
         
         const filePath = path.join(__dirname, 'uploaded_dataset.csv');
