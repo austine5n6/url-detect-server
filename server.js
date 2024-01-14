@@ -44,7 +44,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
 });
 
 app.post('/process-url', (req, res) => {
-
+  res.header('Access-Control-Allow-Origin', '*'); // Allow requests from any origin
     try {
         
         const filePath = path.join(__dirname, 'uploaded_dataset.csv');
