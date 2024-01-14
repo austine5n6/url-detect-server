@@ -19,13 +19,13 @@ const upload = multer({ storage: storage });
 
 // const router = express.Router();
 
-// app.use((req, res, next) => {
-//   res.header('Access-Control-Allow-Origin', 'https://gleeful-clafoutis-0fee83.netlify.app'); // Allow requests from frontend 
-//   // Additional headers if needed
-//   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-//   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-//   next();
-// });
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');  
+  // Additional headers if needed
+  // res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  // res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 
 app.get('/', (req, res) => res.send("This is the HomePage Test of -|Secure Url Shield|-"))
 
