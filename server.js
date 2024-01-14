@@ -44,8 +44,8 @@ app.post('/upload', upload.single('file'), (req, res) => {
 });
 
 app.post('/process-url', (req, res) => {
+  res.header('Access-Control-Allow-Origin', 'https://gleeful-clafoutis-0fee83.netlify.app'); // Allow requests from frontend 
     try {
-        
         const filePath = path.join(__dirname, 'uploaded_dataset.csv');
         // const fileName = getFileName(filePath);
         const dataset = path.basename(filePath);
